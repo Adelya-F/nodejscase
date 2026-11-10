@@ -35,7 +35,7 @@ ssh -i key.pem ec2-user@<ip-public-ec2>
 
 ```bash
 sudo dnf update -y
-sudo dnf install -y nodejs git nginx
+sudo dnf install -y nodejs git nginx mariadb105
 sudo npm install -g pm2
 ```
 
@@ -47,7 +47,19 @@ cd nodejscase
 npm install
 ```
 
-### 5. Konfigurasi .env
+### 5. Import Database ke RDS
+
+```bash
+mysql -h <endpoint-rds> -u admin -p < database.sql
+```
+
+Cek hasilnya:
+
+```bash
+mysql -h <endpoint-rds> -u admin -p -e "SELECT * FROM nodejscase_db.products"
+```
+
+### 6. Konfigurasi .env
 
 ```bash
 cp .env.example .env
@@ -62,7 +74,7 @@ DB_PASSWORD=<password-rds>
 DB_NAME=nodejscase_db
 ```
 
-### 6. Jalankan dengan PM2
+### 7. Jalankan dengan PM2
 
 ```bash
 pm2 start index.js --name nodejscase
@@ -72,7 +84,7 @@ pm2 startup
 
 Jalankan perintah yang muncul dari `pm2 startup` supaya aplikasi otomatis jalan saat EC2 reboot.
 
-### 7. Konfigurasi Nginx
+### 8. Konfigurasi Nginx
 
 ```bash
 sudo nano /etc/nginx/conf.d/nodejscase.conf
@@ -98,7 +110,7 @@ sudo systemctl enable --now nginx
 
 Buka `http://<ip-public-ec2>` di browser.
 
-### 8. Load Balancer + Auto Scaling
+### 9. Load Balancer + Auto Scaling
 
 1. Buat **AMI** dari EC2 yang sudah jadi
 2. Buat **Launch Template** pakai AMI tersebut
