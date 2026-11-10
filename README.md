@@ -112,10 +112,4 @@ Buka `http://<ip-public-ec2>` di browser.
 
 ### 9. Load Balancer + Auto Scaling
 
-1. Buat **AMI** dari EC2 yang sudah jadi
-2. Buat **Launch Template** pakai AMI tersebut
-3. Buat **Target Group** (HTTP port 80)
-4. Buat **Application Load Balancer** di public subnet, arahkan ke Target Group
-5. Buat **Auto Scaling Group** dari Launch Template di private subnet (2 AZ), sambungkan ke Target Group
 
-Buka DNS Load Balancer lalu refresh beberapa kali, **Server IP** akan berganti-ganti.
